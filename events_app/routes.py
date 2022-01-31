@@ -80,13 +80,14 @@ def rsvp(event_id):
         # TODO: Look up the guest by name. If the guest doesn't exist in the 
         # database, render the event_detail.html template, and pass in an error
         # message as `error`.
-        guest_found = Guest.query.filter_by(name=guest_name)
+        guest_found = Guest.query.filter_by(name=guest_name).first()
         if not guest_found:
             return render_template('event_detail.html', error='guest does not exist')
 
         # TODO: If the guest does exist, add the event to their 
         # events_attending, then commit to the database.
         event.guests.append(guest_found)
+        db.session.commit()
 
     else:
         guest_email = request.form.get('email')
